@@ -223,13 +223,13 @@ class Sheap
     end
 
     def address
-      @json[/"address":"(0x[0-9a-f]+)"/, 1] || @json[/"root":"([a-z_]+)"/, 1]
+      @json[/"address":"(0x[0-9a-f]+)"/, 1] || @json[/"root":"([^"]+)"/, 1]
     end
 
     def referenced_addrs
       str = @json[/"references":\[([",0-9a-fx ]+)\]/, 1]
       if str
-        str.tr('"', '').split(", ")
+        str.tr('" ', '').split(",")
       else
         EMPTY_ARRAY
       end
@@ -256,7 +256,7 @@ class Sheap
     end
 
     def memsize
-      @json[/"memsize":(\d+),/, 1].to_i
+      @json[/"memsize":(\d+)/, 1].to_i
     end
 
     def class_addr
